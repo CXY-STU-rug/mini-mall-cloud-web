@@ -1,0 +1,73 @@
+/* ============================================================
+ * 全局基础样式 + 电商红配色变量
+ * (配色规范来自 docs/C端商城_完整规划.md, 京东/天猫风)
+ * ============================================================ */
+
+:root {
+  /* ─── 主色 ─── */
+  --primary: #E1251B;        /* 京东红 / 主按钮 / 高亮 */
+  --primary-dark: #C0392B;   /* 按钮悬停 */
+  --primary-light: #FFF1F0;  /* 主色浅底, 卡片背景 */
+
+  /* ─── 辅助 ─── */
+  --accent: #FF6700;         /* 秒杀橙 / 限时倒计时 / 价格标签 */
+  --accent-bg: #FFF7E6;
+  --warning: #FAAD14;        /* 限时 / 倒计时 */
+
+  /* ─── 中性文字 ─── */
+  --text-primary: #1F1F1F;
+  --text-regular: #595959;
+  --text-secondary: #8C8C8C;
+  --text-placeholder: #BFBFBF;
+
+  /* ─── 背景 ─── */
+  --bg-page: #F5F5F5;        /* 页面整体浅灰底 */
+  --bg-white: #FFFFFF;       /* 卡片白底 */
+  --bg-header: #FFFFFF;      /* 顶部白 */
+
+  /* ─── 边框 ─── */
+  --border: #EEEEEE;
+  --border-light: #F0F0F0;
+
+  /* ─── 价格 ─── */
+  --price: #E1251B;          /* 价格永远红色 */
+  --price-original: #999;    /* 划线原价 */
+
+  /* 京东风字号偏大: 整体基准 14px */
+  font-size: 14px;
+  font-family: system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  color: var(--text-primary);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-page);   /* 页面整体浅灰底 */
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 价格通用类: 任何地方写 class="price" 都是红色 */
+.price {
+  color: var(--price);
+  font-weight: 700;
+}
+
+.price-original {
+  color: var(--price-original);
+  text-decoration: line-through;
+  font-weight: 400;
+}

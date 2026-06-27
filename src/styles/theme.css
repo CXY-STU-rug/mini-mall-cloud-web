@@ -1,0 +1,27 @@
+/* ============================================================
+ * Element Plus 主题覆盖 — 把默认蓝换成电商红
+ *
+ * ⚠ 这个文件必须在 main.ts 里 import 在 element-plus/dist/index.css "之后",
+ *    否则覆盖不掉 (CSS 后写的同优先级规则胜出)。
+ * ============================================================ */
+
+/* ① 覆盖 Element Plus 的 primary 色板 (影响所有 type=primary 的组件) */
+:root {
+  --el-color-primary: #E1251B;
+  --el-color-primary-light-3: #EB5A52;
+  --el-color-primary-light-5: #F08F89;
+  --el-color-primary-light-7: #F5BFBC;
+  --el-color-primary-light-8: #F8D4D2;
+  --el-color-primary-light-9: #FCE9E8;
+  --el-color-primary-dark-2: #C0392B;
+}
+
+/* ② 主按钮: 红底, 悬停更深 */
+.el-button--primary {
+  --el-button-bg-color: #E1251B;
+  --el-button-border-color: #E1251B;
+  --el-button-hover-bg-color: #C0392B;
+  --el-button-hover-border-color: #C0392B;
+  --el-button-active-bg-color: #C0392B;
+  --el-button-active-border-color: #C0392B;
+}
