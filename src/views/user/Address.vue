@@ -10,7 +10,7 @@
  *       editing == 某条   → 编辑 (updateAddress)
  *   - "设为默认" = 调 setDefaultAddress(id), 后端事务清旧默认+设新, 保证单一默认
  */
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import {
   listAddress, createAddress, updateAddress, removeAddress, setDefaultAddress, type Address
@@ -18,6 +18,9 @@ import {
 
 const list = ref<Address[]>([])
 const loading = ref(true)
+
+// 默认地址数量: >1 说明有脏数据(多默认), 此时默认行也放出"设为默认"按钮供修复
+const defaultCount = computed(() => list.value.filter(a => a.isDefault === 1).length)
 
 // 对话框状态
 const dialogVisible = ref(false)
@@ -105,8 +108,9 @@ async function remove(a: Address) {
 }
 
 // 设为默认: 调专用接口, 后端事务清掉旧默认再设这条, 保证只有一个默认
+// (多默认脏数据时, 对默认行点击也允许 → 收敛成唯一默认; 单默认就没必要重复设)
 async function setDefault(a: Address) {
-  if (a.isDefault === 1) return
+  if (a.isDefault === 1 && defaultCount.value === 1) return
   try {
     await setDefaultAddress(a.id!)
     ElMessage.success('已设为默认')
@@ -137,7 +141,7 @@ onMounted(load)
           <div class="line2">{{ a.province }}{{ a.city }}{{ a.district }} {{ a.detail }}</div>
         </div>
         <div class="ops">
-          <el-button v-if="a.isDefault !== 1" link type="primary" @click="setDefault(a)">设为默认</el-button>
+          <el-button v-if="a.isDefault !== 1 || defaultCount > 1" link type="primary" @click="setDefault(a)">设为默认</el-button>
           <el-button link @click="openEdit(a)">编辑</el-button>
           <el-button link type="danger" @click="remove(a)">删除</el-button>
         </div>

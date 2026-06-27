@@ -13,6 +13,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { listMyFavorites, removeFavorite } from '@/api/favorite'
 import type { Product } from '@/api/product'
+import ProductImage from '@/components/ProductImage.vue'
 
 const router = useRouter()
 const list = ref<Product[]>([])
@@ -51,7 +52,7 @@ onMounted(load)
       <div v-for="p in list" :key="p.id" class="card">
         <span class="del" @click.stop="onRemove(p)">✕</span>
         <div class="cover" @click="router.push(`/product/${p.id}`)">
-          <img :src="p.coverImage" :alt="p.name" />
+          <ProductImage :src="p.coverImage" :alt="p.name" />
         </div>
         <div class="name" @click="router.push(`/product/${p.id}`)">{{ p.name }}</div>
         <div class="price">¥{{ p.price }}</div>

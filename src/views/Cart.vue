@@ -21,6 +21,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getCart, updateCartQuantity, removeCartItem, type CartItemVO } from '@/api/cart'
 import { useCartStore } from '@/stores/cart'
+import ProductImage from '@/components/ProductImage.vue'
 
 const router = useRouter()
 const cartStore = useCartStore()
@@ -151,7 +152,7 @@ onMounted(loadCart)
           />
         </span>
         <span class="col-info">
-          <img :src="item.productImage" class="thumb" :alt="item.productName" />
+          <div class="thumb"><ProductImage :src="item.productImage" :alt="item.productName" /></div>
           <span class="pname" @click="router.push(`/product/${item.productId}`)">
             {{ item.productName }}
           </span>

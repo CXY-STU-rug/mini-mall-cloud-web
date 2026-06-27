@@ -14,6 +14,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { getOrderDetail, cancelOrder, signOrder, type OrderDetailVO, type OrderItemVO } from '@/api/order'
 import { listMyReviews, type ReviewVO } from '@/api/review'
 import ReviewDialog from '@/components/ReviewDialog.vue'
+import ProductImage from '@/components/ProductImage.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -129,7 +130,7 @@ onMounted(load)
       <section class="block">
         <div class="block-title">商品清单</div>
         <div v-for="it in order.items" :key="it.orderItemId" class="goods">
-          <img :src="it.productImage" class="thumb" :alt="it.productName" />
+          <div class="thumb"><ProductImage :src="it.productImage" :alt="it.productName" /></div>
           <span class="gname" @click="router.push(`/product/${it.productId}`)">{{ it.productName }}</span>
           <span class="gprice">¥{{ it.price }} × {{ it.quantity }}</span>
           <span class="gsub price">¥{{ it.subtotal }}</span>

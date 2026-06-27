@@ -17,6 +17,7 @@
 import { ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { createReview } from '@/api/review'
+import ProductImage from '@/components/ProductImage.vue'
 
 // 入参: v-model 的值 + 这条评价针对哪个订单/商品 + 展示用的商品名/图
 const props = defineProps<{
@@ -84,7 +85,7 @@ async function submit() {
   >
     <!-- 顶部展示是给哪件商品评价 -->
     <div class="rd-product">
-      <img v-if="productImage" :src="productImage" class="rd-img" :alt="productName" />
+      <div class="rd-img"><ProductImage :src="productImage" :alt="productName" /></div>
       <span class="rd-name">{{ productName }}</span>
     </div>
 

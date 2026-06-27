@@ -24,6 +24,7 @@ import { addToCart, getCart } from '@/api/cart'
 import { checkFavorite, addFavorite, removeFavorite } from '@/api/favorite'
 import { useUserStore } from '@/stores/user'
 import { useCartStore } from '@/stores/cart'
+import ProductImage from '@/components/ProductImage.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -56,17 +57,17 @@ function productId(): number {
 async function loadData() {
   loading.value = true
   try {
-    // 商品 + 评价并行拉
+    // 商品是主体, 必须成功; 评价是次要, 挂了(如 review 服务没起)不该拖垮整页 → 单独 catch 兜空
     const [p, rs] = await Promise.all([
       getProduct(productId()),
-      listProductReviews(productId())
+      listProductReviews(productId()).catch(() => [] as ReviewVO[])
     ])
     product.value = p
     activeImg.value = p.coverImage   // 大图先显封面
     reviews.value = rs
-    // 已登录才查收藏状态 (游客 /favorite/{id}/exists 会 401)
+    // 已登录才查收藏状态 (游客 /favorite/{id}/exists 会 401); 查失败也不影响主体
     if (userStore.isLogin) {
-      favorited.value = await checkFavorite(productId())
+      favorited.value = await checkFavorite(productId()).catch(() => false)
     }
   } catch (e) {
     console.error('[product] loadData', e)
@@ -164,7 +165,7 @@ onMounted(loadData)
       <div class="top">
         <div class="gallery">
           <div class="main-img">
-            <img :src="activeImg || product.coverImage" :alt="product.name" />
+            <ProductImage :src="activeImg || product.coverImage" :alt="product.name" />
           </div>
           <!-- 缩略图条: 多于 1 张才显示, 悬停/点击切换大图 -->
           <div v-if="gallery.length > 1" class="thumbs">
@@ -176,7 +177,7 @@ onMounted(loadData)
               @mouseenter="activeImg = img"
               @click="activeImg = img"
             >
-              <img :src="img" :alt="`图 ${i + 1}`" />
+              <ProductImage :src="img" :alt="`图 ${i + 1}`" />
             </div>
           </div>
         </div>

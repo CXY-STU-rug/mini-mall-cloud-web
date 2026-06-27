@@ -18,6 +18,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { listMyOrders, cancelOrder, signOrder, type OrderListVO } from '@/api/order'
+import ProductImage from '@/components/ProductImage.vue'
 
 const router = useRouter()
 
@@ -119,7 +120,7 @@ onMounted(load)
         <!-- 明细行 -->
         <div class="card-body" @click="router.push(`/user/orders/${o.orderId}`)">
           <div v-for="it in o.items" :key="it.orderItemId" class="goods">
-            <img :src="it.productImage" class="thumb" :alt="it.productName" />
+            <div class="thumb"><ProductImage :src="it.productImage" :alt="it.productName" /></div>
             <span class="gname">{{ it.productName }}</span>
             <span class="gprice">¥{{ it.price }} × {{ it.quantity }}</span>
           </div>

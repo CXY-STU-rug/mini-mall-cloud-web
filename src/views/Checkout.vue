@@ -26,6 +26,7 @@ import { listAddress, type Address } from '@/api/address'
 import { createOrder } from '@/api/order'
 import { listMyCoupons, type UserCouponVO } from '@/api/coupon'
 import { useCartStore } from '@/stores/cart'
+import ProductImage from '@/components/ProductImage.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -164,7 +165,7 @@ onMounted(loadData)
     <section class="block">
       <div class="block-title">商品清单</div>
       <div v-for="i in items" :key="i.cartItemId" class="goods-row">
-        <img :src="i.productImage" class="thumb" :alt="i.productName" />
+        <div class="thumb"><ProductImage :src="i.productImage" :alt="i.productName" /></div>
         <span class="gname">{{ i.productName }}</span>
         <span class="gprice">¥{{ i.price }}</span>
         <span class="gqty">× {{ i.quantity }}</span>

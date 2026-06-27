@@ -14,8 +14,8 @@
  *   - 购物车徽章: 已登录就拉一次数量
  *   - 登录态: 看 userStore.isLogin 决定右上角显示什么
  */
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, watch, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/user'
@@ -24,17 +24,41 @@ import { listCategory, type Category } from '@/api/category'
 import CartIcon from '@/components/CartIcon.vue'
 
 const router = useRouter()
+const route = useRoute()
 const userStore = useUserStore()
 const cartStore = useCartStore()
 
 // ─── 搜索框 ───────────────────────────────────
 const keyword = ref('')
+
+// 搜索框跟随路由: 在搜索页显示当前关键词, 一离开搜索页就自动清空
+// immediate: 进页面立即对齐一次 (比如直接打开 /search?keyword=xx 也能回填)
+watch(
+  () => route.fullPath,
+  () => {
+    keyword.value = route.path === '/search' ? ((route.query.keyword as string) || '') : ''
+  },
+  { immediate: true }
+)
+
 function doSearch() {
   const kw = keyword.value.trim()
   if (!kw) return
   // 跳搜索结果页, 关键词放 query (WEB.3 做 Search.vue)
   router.push({ path: '/search', query: { keyword: kw } })
 }
+
+// 这些页有 position:fixed 的底部栏(购物车结算栏/结算页提交栏)
+// → 给页脚留出底部空间, 避免页脚被固定栏盖住
+const hasBottomBar = computed(() => ['/cart', '/checkout'].includes(route.path))
+
+// 交易类页面(购物车/结算/支付)和个人中心不显示红底"首页+分类"导航条
+// /pay/:orderNo 和 /user/* 都是变长路径, 用 startsWith 匹配前缀
+const showNavMenu = computed(() =>
+  !['/cart', '/checkout'].includes(route.path) &&
+  !route.path.startsWith('/pay') &&
+  !route.path.startsWith('/user')
+)
 
 // ─── 导航条分类 ───────────────────────────────
 const categories = ref<Category[]>([])
@@ -113,8 +137,8 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- ③ 红底导航条: 分类横向 -->
-    <div class="navmenu">
+    <!-- ③ 红底导航条: 分类横向 (购物车等交易页隐藏) -->
+    <div v-if="showNavMenu" class="navmenu">
       <div class="navmenu-inner">
         <RouterLink to="/" class="nav-item nav-home">首页</RouterLink>
         <RouterLink
@@ -134,7 +158,7 @@ onMounted(() => {
     </main>
 
     <!-- ⑤ 页脚 -->
-    <footer class="footer">
+    <footer class="footer" :class="{ 'with-bottom-bar': hasBottomBar }">
       <div class="footer-links">
         <span>关于我们</span><span>联系客服</span><span>配送方式</span>
         <span>支付方式</span><span>售后服务</span>
@@ -264,6 +288,10 @@ onMounted(() => {
   border-top: 1px solid var(--border);
   padding: 24px 16px;
   text-align: center;
+}
+/* 购物车/结算页有固定底栏, 页脚多留出底部空间避免被盖 */
+.footer.with-bottom-bar {
+  padding-bottom: 84px;
 }
 .footer-links {
   display: flex;

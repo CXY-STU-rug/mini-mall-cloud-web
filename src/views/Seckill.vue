@@ -20,6 +20,7 @@ import {
   type SeckillActivityVO
 } from '@/api/seckill'
 import { useUserStore } from '@/stores/user'
+import ProductImage from '@/components/ProductImage.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -156,7 +157,7 @@ onUnmounted(stopPolling)   // 离开页面清定时器, 防泄漏
 
     <div class="sk-list">
       <div v-for="a in activities" :key="a.id" class="sk-card">
-        <img :src="a.productImage" class="sk-img" :alt="a.productName" />
+        <div class="sk-img"><ProductImage :src="a.productImage" :alt="a.productName" /></div>
         <div class="sk-info">
           <div class="sk-name">{{ a.productName }}</div>
           <div class="sk-price-row">

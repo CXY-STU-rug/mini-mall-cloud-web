@@ -17,6 +17,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { addFavorite, checkFavorite, removeFavorite } from '@/api/favorite'
 import { useUserStore } from '@/stores/user'
+import ProductImage from '@/components/ProductImage.vue'
 
 // 卡片只用到这几个字段, 定义一个最小公共形状 (Product 和 SearchVO 都满足)
 interface CardItem {
@@ -85,7 +86,7 @@ watch(() => [props.item.id, userStore.token], loadFavorite, { immediate: true })
   <div class="product-card" @click="goDetail">
     <!-- 商品图: 用固定高度 + cover 裁切, 保证所有卡片等高 -->
     <div class="cover">
-      <img :src="item.coverImage" :alt="item.name" />
+      <ProductImage :src="item.coverImage" :alt="item.name" />
       <!-- 收藏♥角标: @click.stop 防止点它时也触发整卡跳详情 -->
       <button
         class="fav-badge" :class="{ active: favorited }"
