@@ -89,7 +89,7 @@ onMounted(() => {
     <!-- ① 顶部细条 -->
     <div class="topbar">
       <div class="topbar-inner">
-        <span class="welcome">欢迎来到 mini-mall 商城</span>
+        <span class="welcome">欢迎来到小奇遇商城</span>
         <div class="topbar-right">
           <template v-if="userStore.isLogin">
             <span>你好, {{ userStore.userInfo?.nickname || userStore.userInfo?.username }}</span>
@@ -115,7 +115,7 @@ onMounted(() => {
     <div class="header">
       <div class="header-inner">
         <div class="logo" @click="router.push('/')">
-          <span class="logo-mall">mini</span><span class="logo-cloud">mall</span>
+          <span class="logo-mall">小奇</span><span class="logo-cloud">遇</span>
         </div>
 
         <div class="search">
@@ -164,7 +164,7 @@ onMounted(() => {
         <span>支付方式</span><span>售后服务</span>
       </div>
       <div class="footer-copy">
-        mini-mall-cloud · 教学项目 · 仅供学习 · © 2026
+        小奇遇商城 · © 2026
       </div>
     </footer>
   </div>

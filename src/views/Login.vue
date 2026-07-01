@@ -67,10 +67,10 @@ function goRegister() {
   <div class="login-page">
     <div class="login-card">
       <div class="brand">
-        <span class="brand-mall">mini</span><span class="brand-cloud">mall</span>
+        <span class="brand-mall">小奇</span><span class="brand-cloud">遇</span>
       </div>
       <h2 class="title">登录</h2>
-      <p class="subtitle">登录 mini-mall 商城, 开始购物</p>
+      <p class="subtitle">登录小奇遇商城, 开始购物</p>
 
       <el-form
         ref="formRef"

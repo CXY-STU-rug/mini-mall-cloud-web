@@ -128,10 +128,6 @@ onMounted(load)
 
       <!-- 表单 -->
       <el-form label-width="80px" class="form">
-        <el-form-item label="用户名">
-          <el-input :model-value="username" disabled />
-          <span class="hint">用户名不可修改</span>
-        </el-form-item>
         <el-form-item label="昵称">
           <el-input v-model="form.nickname" placeholder="给自己起个昵称" maxlength="20" />
         </el-form-item>

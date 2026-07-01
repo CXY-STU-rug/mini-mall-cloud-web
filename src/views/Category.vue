@@ -18,6 +18,14 @@ import ProductCard from '@/components/ProductCard.vue'
 const route = useRoute()
 const router = useRouter()
 
+// 分类图标兼容: URL → <img>, emoji → 文字, 否则默认图标
+function isIconUrl(icon?: string): boolean {
+  return !!icon && /^https?:\/\//i.test(icon)
+}
+function iconText(icon?: string): string {
+  return icon && /[^\u0000-ÿ]/.test(icon) ? icon : '🛒'
+}
+
 const categories = ref<Category[]>([])
 const products = ref<Product[]>([])
 const loading = ref(true)
@@ -94,7 +102,10 @@ onMounted(async () => {
           :class="{ active: c.id === currentId() }"
           @click="selectCategory(c.id)"
         >
-          <span class="ic">{{ c.icon || '🛒' }}</span>{{ c.name }}
+          <span class="ic">
+            <img v-if="isIconUrl(c.icon)" :src="c.icon" :alt="c.name" class="cat-img" />
+            <template v-else>{{ iconText(c.icon) }}</template>
+          </span>{{ c.name }}
         </li>
       </ul>
     </aside>
@@ -166,6 +177,13 @@ onMounted(async () => {
 }
 .ic {
   margin-right: 8px;
+  display: inline-flex;
+  align-items: center;
+}
+.cat-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 .content {
   flex: 1;
